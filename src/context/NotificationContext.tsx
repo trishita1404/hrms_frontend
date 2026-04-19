@@ -4,6 +4,8 @@ import axiosInstance from '../api/axiosInstance';
 import { AxiosError } from 'axios';
 import { useAppSelector } from '../store/hooks';
 
+// --- PRODUCTION READY URL CONFIG ---
+const SOCKET_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
 interface Notification {
   _id: string;
@@ -20,10 +22,8 @@ interface NotificationContextType {
   markAllAsRead: () => Promise<void>;
 }
 
-
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
 
-// Provider (Exported)
 export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const { user } = useAppSelector((state) => state.auth);
@@ -48,8 +48,11 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
       await fetchNotifications();
     })();
 
-    const socket = io('http://localhost:3001', {
+    // --- UPDATED SOCKET INITIALIZATION ---
+    // Using SOCKET_URL so it connects to Render in production
+    const socket = io(SOCKET_URL, {
       query: { userId: user._id },
+      transports: ['websocket', 'polling'], // Added for better compatibility with Render
     });
     socketRef.current = socket;
 

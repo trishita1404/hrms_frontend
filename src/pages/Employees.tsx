@@ -4,7 +4,7 @@ import AddEmployeeModal from '../components/AddEmployeeModal';
 import employeeService from '../features/employees/employeeService';
 import { useAppSelector } from '../store/hooks';
 
-const API_BASE_URL = 'http://localhost:3001'; 
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
 interface Employee {
   _id: string;

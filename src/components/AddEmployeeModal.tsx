@@ -43,7 +43,7 @@ const AddEmployeeModal = ({ isOpen, onClose, onAddEmployee, initialData }: AddEm
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append('name', name); // Sends the manually typed name
+    formData.append('name', name); 
     formData.append('email', email);
     formData.append('role', role);
     formData.append('department', department);
